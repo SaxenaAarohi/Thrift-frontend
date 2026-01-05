@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import synctoDB from "../helper/synctodb";
 import { useCartStore } from "../store/useCartStore";
 import { Navigation } from "./Navigation";
+import { toast } from "react-toastify";
 
 export default function CartPage() {
 
@@ -30,22 +31,30 @@ export default function CartPage() {
         setSubtotal(totalquantity);
     }, [cartItems]);
 
-    function handledelete(item : any) {
+    function handledelete(item: any) {
         const updatedcart = removeitem(item);
         synctoDB(userId, updatedcart)
     }
 
-    function increment(item : any) {
+    function increment(item: any) {
         const updatedcart = addtoCart(item);
         synctoDB(userId, updatedcart)
     }
 
-    function handledecrement(item : any) {
+    function handledecrement(item: any) {
         const updatedcart = decrement(item);
         synctoDB(userId, updatedcart)
     }
 
     async function handlecheckout() {
+        if (userId === undefined) {
+            toast.error("Please login to proceed to checkout");
+            return;
+        }
+        if (cartItems.length === 0) {
+            toast.error("Your cart is empty");
+            return;
+        }
         const stripe = await loadStripe((import.meta as any).env.VITE_STRIPE_PUBLISHABLE_KEY);
 
         const header = {
@@ -56,8 +65,8 @@ export default function CartPage() {
             method: "POST",
             headers: header,
             body: JSON.stringify({
-                buyer_id : userId,
-                products : cartItems,
+                buyer_id: userId,
+                products: cartItems,
             }),
         });
 
@@ -77,17 +86,24 @@ export default function CartPage() {
             <Navigation
                 cartCount={0}
             />
-            <div className="pt-5 bg-slate-50 font-sans  pb-28">
+            <div className={`pt-5 bg-slate-50 font-sans pb-28 ${cartItems.length === 0 ? "h-[89vh] overflow-hidden" : ""
+                }`}>
 
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                    <h1 className="font-serif text-2xl md:text-5xl font-bold text-slate-900 mb-10 relative inline-block">
+                    <h1 className="font-serif text-2xl md:text-5xl font-bold text-slate-900 mb-5 relative inline-block">
                         Your Cart
                         <span className="absolute -bottom-2 left-0 w-full h-3 bg-pop-yellow/40 -z-10 rounded-full"></span>
                     </h1>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+
+
+                    <div className={`grid ${cartItems.length > 0
+                            ? "grid-cols-1 lg:grid-cols-3"
+                            : "grid-cols-1"
+                        } gap-10`}>
 
                         <div className="lg:col-span-2 flex flex-col gap-6">
                             {cartItems.length > 0 ?
@@ -135,35 +151,71 @@ export default function CartPage() {
                                         </div>
                                     </div>
                                 ))
-                                : <p>No Items in Cart</p>
+                                : (
+                                    <div className="flex flex-col items-center justify-center bg-white border border-dashed border-slate-300 rounded-2xl py-20 px-6 text-center">
+                                        <div className="w-24 h-24 mb-6 rounded-full bg-slate-100 flex items-center justify-center">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="h-12 w-12 text-slate-400"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={1.5}
+                                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 7h13L17 13M7 13h10"
+                                                />
+                                            </svg>
+                                        </div>
+
+                                        <h2 className="text-2xl font-bold text-slate-800 mb-2">
+                                            Your cart is empty
+                                        </h2>
+
+                                        <p className="text-slate-500 mb-6 max-w-sm">
+                                            Looks like you haven’t added anything yet. Start shopping to fill your cart.
+                                        </p>
+
+                                        <a
+                                            href="/"
+                                            className="px-6 py-3 rounded-full bg-pop-pink text-white font-semibold shadow hover:shadow-pop-pink/30 hover:scale-105 transition"
+                                        >
+                                            Continue Shopping
+                                        </a>
+                                    </div>
+                                )
                             }
                         </div>
 
-                        <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200 h-fit sticky top-24">
-                            <h2 className="font-bold text-xl text-slate-900 mb-4">Order Summary</h2>
+                        {cartItems.length > 0 && (
+                            <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200 h-fit sticky top-24">
+                                <h2 className="font-bold text-xl text-slate-900 mb-4">Order Summary</h2>
 
-                            <div className="flex justify-between text-slate-700 mb-2">
-                                <p>Subtotal</p>
-                                <p>₹{subtotal.toFixed(2)}</p>
+                                <div className="flex justify-between text-slate-700 mb-2">
+                                    <p>Subtotal</p>
+                                    <p>₹{subtotal.toFixed(2)}</p>
+                                </div>
+
+                                <div className="flex justify-between text-slate-700 mb-2">
+                                    <p>Shipping</p>
+                                    <p className="font-medium text-green-600">Free</p>
+                                </div>
+
+                                <div className="border-t my-4"></div>
+
+                                <div className="flex justify-between text-xl font-bold text-slate-900">
+                                    <p>Total</p>
+                                    <p>₹{subtotal.toFixed(2)}</p>
+                                </div>
+
+                                <button onClick={handlecheckout}
+                                    className="w-full mt-6 bg-pop-pink text-white py-3 rounded-full text-lg font-bold shadow-lg hover:shadow-pop-pink/30 hover:scale-[1.02] transition">
+                                    Checkout
+                                </button>
                             </div>
-
-                            <div className="flex justify-between text-slate-700 mb-2">
-                                <p>Shipping</p>
-                                <p className="font-medium text-green-600">Free</p>
-                            </div>
-
-                            <div className="border-t my-4"></div>
-
-                            <div className="flex justify-between text-xl font-bold text-slate-900">
-                                <p>Total</p>
-                                <p>₹{subtotal.toFixed(2)}</p>
-                            </div>
-
-                            <button onClick={handlecheckout}
-                                className="w-full mt-6 bg-pop-pink text-white py-3 rounded-full text-lg font-bold shadow-lg hover:shadow-pop-pink/30 hover:scale-[1.02] transition">
-                                Checkout
-                            </button>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>
