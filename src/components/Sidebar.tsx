@@ -17,7 +17,7 @@ export const Sidebar = ({ currentView, onViewChange }) => {
 
   useEffect(() => {
     async function gettotal() {
-      const data = await fetch(`http://localhost:5000/api/gettotal/${user?.id}`);
+      const data = await fetch(`${(import.meta as any).env.VITE_API_URL}/api/gettotal/${user?.id}`);
       const res = await data.json();
       settotalearnings(res);
     }

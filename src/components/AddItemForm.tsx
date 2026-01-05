@@ -61,7 +61,7 @@ export const AddItemForm = ({ onSubmit, onCancel }) => {
       setIsUploading(true);
       const imgurl = await uploadToCloudinary(imageFile);
 
-      const res = await fetch('http://localhost:5000/api/products/uploadproduct', {
+      const res = await fetch(`${(import.meta as any).env.VITE_API_URL}/api/products/uploadproduct`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

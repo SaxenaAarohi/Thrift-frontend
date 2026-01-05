@@ -2,7 +2,7 @@
 
 export default async function synctoDB(userId,cart){
     try {
-       const res =  await fetch("http://localhost:5000/api/cart", {
+       const res =  await fetch(`${(import.meta as any).env.VITE_API_URL}/api/cart`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({userId, cart }),

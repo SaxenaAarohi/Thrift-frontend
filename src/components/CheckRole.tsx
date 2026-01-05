@@ -17,7 +17,7 @@ const CheckRole = () => {
 
         async function checkrole() {
             try {
-                const res = await fetch(`http://localhost:5000/api/user/checkrole/${user?.id}`);
+                const res = await fetch(`${(import.meta as any).env.VITE_API_URL}/api/user/checkrole/${user?.id}`);
                 const data = await res.json();
 
                 if (data.role === "seller") {

@@ -26,7 +26,7 @@ const App = () => {
 
   useEffect(() => {
     async function handlelogin() {
-      const res = await fetch(`http://localhost:5000/api/cart/${user?.id}`);
+      const res = await fetch(`${(import.meta as any).env.VITE_API_URL}/api/cart/${user?.id}`);
       const dbcart = await res.json();
 
       if (cart.length > 0 && dbcart.length === 0)

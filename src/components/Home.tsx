@@ -20,7 +20,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('http://localhost:5000/product');
+        const res = await fetch(`${(import.meta as any).env.VITE_API_URL}/product`);
         const data = await res.json();
         setProducts(data);
         setFilteredProducts(data);

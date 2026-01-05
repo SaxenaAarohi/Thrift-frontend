@@ -21,7 +21,7 @@ const SellerHome = () => {
 
      async function fetchData() {
       try{
-      const response = await fetch(`http://localhost:5000/api/products/getproducts/${user?.id}`);
+      const response = await fetch(`${(import.meta as any).env.VITE_API_URL}/api/products/getproducts/${user?.id}`);
       const data = await response.json();
       setItems(data);
       }catch(err){

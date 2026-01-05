@@ -61,7 +61,7 @@ export default function CartPage() {
             "Content-Type": "application/json",
         };
 
-        const response = await fetch("http://localhost:5000/api/checkout", {
+        const response = await fetch(`${(import.meta as any).env.VITE_API_URL}/api/checkout`, {
             method: "POST",
             headers: header,
             body: JSON.stringify({

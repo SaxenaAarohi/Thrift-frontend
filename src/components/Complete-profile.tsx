@@ -28,7 +28,7 @@ const Complete_profile = () => {
             email: user?.primaryEmailAddress?.emailAddress,
             ...formData,
         };
-        const res = await fetch("http://localhost:5000/api/user",
+        const res = await fetch(`${(import.meta as any).env.VITE_API_URL}//api/user`,
             {
                 method: "POST",
                 headers: {
