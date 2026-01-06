@@ -86,7 +86,7 @@ export default function CartPage() {
             <Navigation
                 cartCount={0}
             />
-            <div className={`pt-5 bg-slate-50 font-sans pb-28 ${cartItems.length === 0 ? "h-[89vh] overflow-hidden" : ""
+            <div className={`pt-5 bg-slate-50 font-sans pb-28 ${cartItems.length === 0 ? "h-[89vh] overflow-hidden" : "h-[90vh] overflow-auto"
                 }`}>
 
 
