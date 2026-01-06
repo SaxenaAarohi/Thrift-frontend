@@ -9,7 +9,7 @@ import CheckRole from "./components/CheckRole";
 import Complete_profile from "./components/Complete-profile";
 import Home from "./components/Home";
 import Login from "./components/Login";
-import PaymentCancelCard from "./components/PaymentCancelCard";
+import PaymentCancelCard from "./components/PaymentCancelCard ";
 import PaymentSuccessCard from "./components/PaymentSuccessCard";
 import SellerHome from "./components/SellerHome";
 import Sign_up from "./components/Sign_up";
