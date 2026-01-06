@@ -21,17 +21,20 @@ export const Navigation = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
 
-          <div
-            onClick={() => naviagte("/")}
-            className="flex-shrink-0 flex items-center gap-2 cursor-pointer group"
-          >
-            <div className="bg-gradient-to-br from-pop-pink to-pop-purple p-2.5 rounded-xl shadow-lg group-hover:rotate-12 transition-transform duration-300">
-              <Sparkles size={20} className="text-white" />
-            </div>
-            <span className="font-serif text-3xl font-black tracking-tighter bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
-              ThriftFlip
-            </span>
-          </div>
+        
+<div
+  onClick={() => naviagte("/")}
+  className="flex-shrink-0 flex items-center gap-2 sm:gap-3 cursor-pointer group"
+>
+  <div className="bg-gradient-to-br from-pop-pink to-pop-purple p-2 sm:p-2.5 rounded-lg sm:rounded-xl shadow-lg group-hover:rotate-12 transition-transform duration-300">
+    <Sparkles size={16} className="text-white sm:hidden" />
+    <Sparkles size={20} className="text-white hidden sm:block" />
+  </div>
+
+  <span className="font-serif text-xl sm:text-2xl lg:text-3xl font-black tracking-tight sm:tracking-tighter bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+    ThriftFlip
+  </span>
+</div>
 
           <div className="flex items-center w-full justify-end gap-3">
 
