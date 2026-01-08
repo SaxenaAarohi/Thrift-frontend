@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../store/useCartStore";
 
 const PaymentSuccessCard = () => {
+   const {user}= useUser();
   const clearcart = useCartStore((state) => state.clearcart);
 
   useEffect(()=>{
-    clearcart();
+     clearcart(user.id);
   }, [] );
   const navigate = useNavigate();
   return (
