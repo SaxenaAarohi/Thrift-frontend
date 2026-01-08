@@ -6,6 +6,7 @@ import { FilterType } from "../types";
 import { ProductCard } from "./ProductCard";
 import { Newsletter } from "./Newsletter";
 import { Footer } from "./Footer";
+import ShimmerCard from "./ShimmerCard";
 import { Navigation } from "./Navigation";
 
 const Home = () => {
@@ -14,21 +15,33 @@ const Home = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-
+ const [cacheddata, setcacheddata] = useState(localStorage.getItem("product") || null);
   const shopSectionRef = useRef<HTMLDivElement>(null);
-
+ const [isloading, setisloading] = useState(true);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await fetch(`${(import.meta as any).env.VITE_API_URL}/product`);
         const data = await res.json();
+         setisloading(false);
         setProducts(data);
         setFilteredProducts(data);
+         const value = localStorage.setItem("product", JSON.stringify(data));
       } catch (err) {
         console.error("there is eror", err);
       }
     };
-    fetchProducts();
+       if (cacheddata) {
+      const cache = localStorage.getItem("product");
+      setisloading(false);
+
+      setProducts(JSON.parse(cache));
+      setFilteredProducts(JSON.parse(cache));
+
+    }
+    else
+      fetchProducts();
+
   }, []);
 
 
@@ -133,18 +146,28 @@ const Home = () => {
               </p>
             </div>
           </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 
+  {
+            !isloading ? (<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 
                 gap-x-3 gap-y-6 
                 sm:gap-x-6 sm:gap-y-10 
                 lg:gap-x-8 lg:gap-y-12">
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-              />
-            ))}
-          </div>
+              {filteredProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                />
+              ))}
+            </div>) : (<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 
+                gap-x-3 gap-y-6 
+                sm:gap-x-6 sm:gap-y-10 
+                lg:gap-x-8 lg:gap-y-12">
+              {Array(6)
+                .fill(null)
+                .map((_, index) => (
+                  <ShimmerCard key={index} />
+                ))}
+            </div>)
+          }
         </div>
       </main>
 
