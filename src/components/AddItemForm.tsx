@@ -82,7 +82,8 @@ export const AddItemForm = ({ onSubmit, onCancel }) => {
       if (!res.ok) throw new Error("Failed to save item");
 
       const savedItem = await res.json();
-      console.log("Item saved:", savedItem);
+       localStorage.removeItem("product");
+ window.scrollTo({ top: 0, behavior: 'smooth' });
       toast.success("Item listed successfully!");
 
     }
