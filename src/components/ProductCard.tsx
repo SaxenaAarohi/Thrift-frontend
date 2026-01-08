@@ -24,6 +24,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     toast.success("Product added to cart!");
     setisadded(true);
     const updated = addtoCart(product);
+    if(userId)
     synctoDB(userId, updated);
   }
 
