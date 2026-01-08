@@ -32,18 +32,15 @@ export default function CartPage() {
     }, [cartItems]);
 
     function handledelete(item: any) {
-        const updatedcart = removeitem(item);
-        synctoDB(userId, updatedcart)
+        const updatedcart = removeitem(userId,item);
     }
 
     function increment(item: any) {
-        const updatedcart = addtoCart(item);
-        synctoDB(userId, updatedcart)
+        const updatedcart = addtoCart(userId,item);
     }
 
     function handledecrement(item: any) {
-        const updatedcart = decrement(item);
-        synctoDB(userId, updatedcart)
+        const updatedcart = decrement(userId,item);
     }
 
     async function handlecheckout() {
